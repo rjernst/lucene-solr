@@ -336,13 +336,12 @@ class Lucene50NormsProducer extends NormsProducer {
           throw new CorruptIndexException("PATCHED_TABLE only supports bpv=2 and bpv=4, got=" + bitsPerValue, data);
         }
         final int size = 1 << bitsPerValue;
-        final byte decode[] = new byte[size];
         final int ordsSize = data.readVInt();
+        final byte decode[] = new byte[ordsSize];
         assert ordsSize + 1 == size;
         for (int i = 0; i < ordsSize; ++i) {
           decode[i] = data.readByte();
         }
-        decode[size - 1] = 0;
         
         final PackedInts.Reader ordsReader = PackedInts.getReaderNoHeader(data, PackedInts.Format.byId(formatID), packedIntsVersion, entry.count, bitsPerValue);
         final LoadedNorms nestedInstance = loadNorms(entry.nested);
@@ -353,9 +352,10 @@ class Lucene50NormsProducer extends NormsProducer {
           @Override
           public long get(int docID) {
             int ord = (int)ordsReader.get(docID);
-            if (ord < ordsSize) {
+            try {
+              // doing a try/catch here eliminates a seemingly unavoidable branch in hotspot...
               return decode[ord];
-            } else {
+            } catch (IndexOutOfBoundsException e) {
               return values.get(docID);
             }
           }

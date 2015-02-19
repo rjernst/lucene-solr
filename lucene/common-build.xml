@@ -1574,8 +1574,6 @@ ${tests-output}/junit4-*.suites     - per-JVM executed suites
         <artifact-attachments>
           <attach file="${build.dir}/${final.name}-src.jar"
                   classifier="sources"/>
-          <attach file="${build.dir}/${final.name}-javadoc.jar"
-                  classifier="javadoc"/>
         </artifact-attachments>
       </m2-deploy>
     </sequential>

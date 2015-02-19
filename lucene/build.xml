@@ -27,8 +27,8 @@
   </path>
 
   <patternset id="binary.build.dist.patterns"
-              includes="docs/,**/*.jar,**/*.war"
-              excludes="poms/**,**/*-src.jar,**/*-javadoc.jar"
+              includes="**/*.jar,**/*.war"
+              excludes="docs/**,poms/**,**/*-src.jar,**/*-javadoc.jar"
   />
   <patternset id="binary.root.dist.patterns"
               includes="LICENSE.txt,NOTICE.txt,README.txt,
@@ -37,8 +37,8 @@
                         CHANGES.txt,
                         **/lib/*.jar,
                         licenses/**,
-                        */docs/,**/README*"
-              excludes="build/**,site/**,tools/**,**/lib/*servlet-api*.jar"
+                        **/README*"
+              excludes="build/**,docs/**,site/**,tools/**,**/lib/*servlet-api*.jar"
   />
 
   <!-- ================================================================== -->
